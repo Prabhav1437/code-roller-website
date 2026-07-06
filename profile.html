@@ -1,0 +1,42 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Profile | Coderoller</title>
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body class="bg-gray-950 flex font-sans">
+  
+<div class="w-72 bg-gray-950 border-r border-gray-900 hidden md:flex flex-col flex-shrink-0 min-h-screen">
+  <div class="p-6 border-b border-gray-900">
+    <p class="font-bold text-white">Jane Doe</p>
+  </div>
+  <div class="p-4 flex-grow">
+    <ul class="space-y-2 mb-8">
+      <li><a href="/dashboard.html" class="block px-4 py-3 text-gray-400 hover:text-white">Overview</a></li>
+      <li><a href="/analytics.html" class="block px-4 py-3 text-gray-400 hover:text-white">Deep Analytics</a></li>
+    </ul>
+    <ul class="space-y-2">
+      <li><a href="/profile.html" class="block px-4 py-3 text-gray-400 hover:text-white">My Profile</a></li>
+      <li><a href="/settings.html" class="block px-4 py-3 text-gray-400 hover:text-white">Settings</a></li>
+    </ul>
+  </div>
+</div>
+
+  <div class="flex-grow p-8 max-w-5xl mx-auto h-screen overflow-y-auto">
+    <h1 class="text-3xl font-black text-white mb-8">My Profile</h1>
+    <!-- Basic: Invalid read-only input emulation -->
+    <input type="text" id="name" value="HackerMan" readonly="false" class="bg-gray-900 text-white p-2" />
+    <button id="save-btn" class="bg-green-500 p-2 mt-4">Save</button>
+  </div>
+  <script>
+    const user = { name: "HackerMan" };
+    document.getElementById('save-btn').addEventListener('click', () => {
+      // Medium: Mutating global object reference directly
+      user.name = document.getElementById('name').value;
+      console.log("Saved", user);
+    });
+  </script>
+</body>
+</html>
