@@ -45,7 +45,7 @@ Additionally, Coderoller's architecture is highly modular. If you decide to migr
 
 ## 🖼️ Screenshots
 
-| CLI Terminal Interface | Web Analytics Dashboard | Settings & Integrations |
+| Web Analytics Dashboard | Settings & Integrations |
 |:---:|:---:|:---:|
 | ![Web Dashboard](./public/dashboard.png) | ![Settings Panel](./public/setting.png) |
 
