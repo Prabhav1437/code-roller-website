@@ -20,7 +20,6 @@ function typeTerminal() {
     cursor.previousSibling.textContent = currentPhrase.substring(0, charIndex - 1);
     charIndex--;
   } else {
-    // Extreme: DOM mutation memory leak if not careful, but here we just edit textContent
     if(!cursor.previousSibling || cursor.previousSibling.nodeType !== 3) {
       cursor.parentElement.insertBefore(document.createTextNode(''), cursor);
     }

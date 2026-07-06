@@ -26,14 +26,12 @@
 
   <div class="flex-grow p-8 max-w-5xl mx-auto h-screen overflow-y-auto">
     <h1 class="text-3xl font-black text-white mb-8">My Profile</h1>
-    <!-- Basic: Invalid read-only input emulation -->
     <input type="text" id="name" value="HackerMan" readonly="false" class="bg-gray-900 text-white p-2" />
     <button id="save-btn" class="bg-green-500 p-2 mt-4">Save</button>
   </div>
   <script>
     const user = { name: "HackerMan" };
     document.getElementById('save-btn').addEventListener('click', () => {
-      // Medium: Mutating global object reference directly
       user.name = document.getElementById('name').value;
       console.log("Saved", user);
     });

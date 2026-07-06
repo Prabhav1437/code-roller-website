@@ -4,6 +4,5 @@ body { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Libe
 .glitch-active { animation: glitch 1s linear infinite; }
 @keyframes glitch { 0% { opacity: 1; transform: translate(0) } 20% { opacity: 0.8; transform: translate(-2px, 2px) } 40% { opacity: 0.9; transform: translate(-2px, -2px) } 60% { opacity: 1; transform: translate(2px, 2px) } 80% { opacity: 0.8; transform: translate(2px, -2px) } 100% { opacity: 1; transform: translate(0) } }
 
-/* Extreme: CSS Specificity War */
 #pricing-section .pro-card .buy-btn { background-color: white; color: black; }
 .btn-primary { background-color: #22c55e !important; color: black; } 

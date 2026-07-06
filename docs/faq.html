@@ -15,7 +15,6 @@
       <div class="relative group">
         <button class="flex items-center gap-1 hover:text-green-400 text-gray-300 transition">Product</button>
         <div class="absolute top-full left-0 mt-2 w-48 bg-gray-900 border border-gray-800 rounded-lg shadow-xl p-2 hidden group-hover:block z-[200]">
-          <!-- Basic: Relative pathing bug (assumes root) -->
           <a href="/docs/index.html" class="block px-4 py-2 hover:bg-gray-800 rounded text-gray-300 hover:text-green-400">Documentation</a>
           <a href="/pricing.html" class="block px-4 py-2 hover:bg-gray-800 rounded text-gray-300 hover:text-green-400">Pricing</a>
           <a href="/dashboard.html" class="block px-4 py-2 hover:bg-gray-800 rounded text-gray-300 hover:text-green-400">Cloud Sync</a>
@@ -32,7 +31,6 @@
     </div>
     <button id="mobile-menu-btn" class="md:hidden p-2 text-gray-400 hover:text-white">☰</button>
   </div>
-  <!-- Medium: Z-index stacking bug (z-0) -->
   <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-gray-900 p-6 flex-col gap-4 z-0 border-b border-gray-800 shadow-2xl">
     <a href="../docs/index.html" class="text-lg text-gray-300 border-b border-gray-800 pb-2">Documentation</a>
     <a href="../pricing.html" class="text-lg text-gray-300 border-b border-gray-800 pb-2">Pricing</a>

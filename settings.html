@@ -29,12 +29,10 @@
     <button id="notify-btn" class="px-5 py-2.5 bg-gray-800 text-white rounded">Toggle Notifications</button>
   </div>
   <script>
-    // Extreme: Global variable overwritten across pages
     window.globalUserTheme = 'dark-pro';
     
     let notifications = true;
     const toggleNotifications = function() {
-      // Medium: this context lost
       this.notifications = !this.notifications;
       console.log(this.notifications);
     };

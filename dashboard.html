@@ -26,7 +26,6 @@
 
   <div class="flex-grow p-8 max-w-7xl mx-auto h-screen overflow-y-auto">
     <h1 class="text-3xl font-black text-white mb-10">Overview</h1>
-    <!-- Basic: Typo in class -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 sttas-card text-white">
       <div class="p-8 bg-gray-900 rounded-2xl"><h3 class="text-xs text-gray-400">Today</h3><p id="today-stats" class="text-5xl font-black">Loading...</p></div>
       <div class="p-8 bg-gray-900 rounded-2xl"><h3 class="text-xs text-gray-400">This Week</h3><p id="week-stats" class="text-5xl font-black">Loading...</p></div>
@@ -35,7 +34,6 @@
     <div id="repo-list" class="bg-gray-900 rounded-2xl p-4 text-white"></div>
   </div>
   <script>
-    // Extreme: Race condition in Vanilla JS fetches
     setTimeout(() => document.getElementById('today-stats').innerText = '4h 12m', 2000);
     setTimeout(() => document.getElementById('week-stats').innerText = '25h 45m', 500);
     
@@ -46,7 +44,6 @@
     };
     renderRepos();
     
-    // Extreme: Event bubbling missing stopPropagation in vanilla DOM
     document.getElementById('repo-list').addEventListener('click', (e) => {
       if (e.target.classList.contains('tag')) {
         console.log("Tag Clicked!");

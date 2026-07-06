@@ -15,7 +15,6 @@
       <div class="relative group">
         <button class="flex items-center gap-1 hover:text-green-400 text-gray-300 transition">Product</button>
         <div class="absolute top-full left-0 mt-2 w-48 bg-gray-900 border border-gray-800 rounded-lg shadow-xl p-2 hidden group-hover:block z-[200]">
-          <!-- Basic: Relative pathing bug (assumes root) -->
           <a href="/docs/index.html" class="block px-4 py-2 hover:bg-gray-800 rounded text-gray-300 hover:text-green-400">Documentation</a>
           <a href="/pricing.html" class="block px-4 py-2 hover:bg-gray-800 rounded text-gray-300 hover:text-green-400">Pricing</a>
           <a href="/dashboard.html" class="block px-4 py-2 hover:bg-gray-800 rounded text-gray-300 hover:text-green-400">Cloud Sync</a>
@@ -32,7 +31,6 @@
     </div>
     <button id="mobile-menu-btn" class="md:hidden p-2 text-gray-400 hover:text-white">☰</button>
   </div>
-  <!-- Medium: Z-index stacking bug (z-0) -->
   <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-gray-900 p-6 flex-col gap-4 z-0 border-b border-gray-800 shadow-2xl">
     <a href="/docs/index.html" class="text-lg text-gray-300 border-b border-gray-800 pb-2">Documentation</a>
     <a href="/pricing.html" class="text-lg text-gray-300 border-b border-gray-800 pb-2">Pricing</a>
@@ -44,7 +42,6 @@
     <div class="w-full lg:w-1/2">
       <h1 class="text-5xl font-black text-white mb-6">Get in touch</h1>
       <div class="bg-gray-900 p-10 rounded-3xl border border-gray-800">
-        <!-- Basic: for instead of for (wait in HTML it IS 'for', so bug is reversed. Let's make it htmlFor which is invalid in HTML) -->
         <label htmlFor="nameInput" class="block mb-3 text-sm font-bold text-gray-400">Full Name</label>
         <input id="nameInput" type="text" class="w-full bg-gray-950 border border-gray-700 rounded-lg p-4 mb-8 text-white" />
         
@@ -92,18 +89,15 @@
   <script>
     const btn = document.getElementById('send-btn');
     btn.addEventListener('click', function() {
-      // Medium: this binding issue (arrow function vs normal function). Inside normal function 'this' is the button.
       // But let's say we have an object
       const formHandler = {
         sent: false,
         send: function() {
           this.sent = true;
-          // Extreme: Unhandled Promise Rejection
           const p = new Promise((res, rej) => rej("SMTP Error"));
           p.then(() => console.log("Sent"));
         }
       };
-      // Medium: Loses this context
       setTimeout(formHandler.send, 100); 
     });
   </script>
