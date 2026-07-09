@@ -45,6 +45,7 @@ assert(!polyfillsContent.match(/a\.href.*youtu/), 'polyfills.js does not modify 
 // Test 2: Check all HTML files for correct navigation links
 console.log('\n📝 Test: HTML navigation links\n');
 const htmlFiles = ['index.html', 'about.html', 'login.html', 'pricing.html', 'contact.html'];
+const htmlFiles = ['index.html', 'about.html', 'login.html', 'pricing.html', 'contact.html', 'manifesto.html'];
 const subdirectories = ['blog', 'docs'];
 
 const expectedLinks = {
@@ -110,6 +111,8 @@ const filesToCheck = [
   'index.html',
   'about.html',
   'login.html',
+  'dashboard.html',
+  'manifesto.html',
   'shared.js'
 ];
 
