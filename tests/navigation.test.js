@@ -44,7 +44,7 @@ assert(!polyfillsContent.match(/a\.href.*youtu/), 'polyfills.js does not modify 
 
 // Test 2: Check all HTML files for correct navigation links
 console.log('\n📝 Test: HTML navigation links\n');
-const htmlFiles = ['index.html', 'about.html', 'login.html', 'dashboard.html', 'pricing.html', 'contact.html'];
+const htmlFiles = ['index.html', 'about.html', 'login.html', 'pricing.html', 'contact.html', 'manifesto.html'];
 const subdirectories = ['blog', 'docs'];
 
 const expectedLinks = {
@@ -69,9 +69,15 @@ htmlFiles.forEach(file => {
     
     // Check for specific navigation links
     Object.entries(expectedLinks).forEach(([linkText, expectedHref]) => {
-      if (content.includes(linkText)) {
-        assert(content.includes(`href="${expectedHref}"`), `${file}: ${linkText} link has correct href`);
-      }
+      assert(
+          content.includes(linkText),
+          `${file}: Missing navigation link "${linkText}"`
+      );
+
+      assert(
+          content.includes(`href="${expectedHref}"`),
+          `${file}: "${linkText}" has incorrect href`
+      );
     });
   }
 });
@@ -104,6 +110,8 @@ const filesToCheck = [
   'index.html',
   'about.html',
   'login.html',
+  'dashboard.html',
+  'manifesto.html',
   'shared.js'
 ];
 
