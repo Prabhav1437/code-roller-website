@@ -81,6 +81,7 @@ htmlFiles.forEach(file => {
     });
   }
 });
+
 // Test 3: Verify malicious injection file is removed
 console.log('\n📝 Test: Malicious files removed\n');
 const injectionFileExists = fs.existsSync(path.join(projectRoot, 'inject_speed_and_rickroll.cjs'));
