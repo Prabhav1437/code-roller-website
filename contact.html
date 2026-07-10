@@ -39,14 +39,62 @@
   </div>
 </nav>
 
-  <div class="flex-grow max-w-7xl mx-auto px-6 py-24 flex flex-col lg:flex-row gap-20">
+  <div class="flex-grow max-w-7xl mx-auto px-6 py-24 flex flex-col lg:flex-row gap-16 w-full">
     <div class="w-full lg:w-1/2">
       <h1 class="text-5xl font-black text-white mb-6">Get in touch</h1>
-      <div class="bg-gray-900 p-10 rounded-3xl border border-gray-800">
-        <label htmlFor="nameInput" class="block mb-3 text-sm font-bold text-gray-400">Full Name</label>
-        <input id="nameInput" type="text" class="w-full bg-gray-950 border border-gray-700 rounded-lg p-4 mb-8 text-white" />
-        
-        <button id="send-btn" class="w-full bg-green-500 text-black font-black py-5 rounded-xl text-lg">Send Message</button>
+      <p class="text-xl text-gray-400 mb-10">Have questions about our enterprise plans, need technical support, or want to report a bug? We're here to help.</p>
+      
+      <div class="bg-gray-900 p-10 rounded-3xl border border-gray-800 shadow-2xl relative">
+        <div id="success-message" class="hidden absolute inset-0 bg-gray-900/95 backdrop-blur-sm rounded-3xl z-10 flex flex-col items-center justify-center p-10 text-center border border-green-500/30">
+          <div class="w-16 h-16 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mb-6">
+            <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+          </div>
+          <h3 class="text-2xl font-bold text-white mb-2">Message Sent!</h3>
+          <p class="text-gray-400">We'll get back to you within 24 hours.</p>
+          <button id="reset-btn" class="mt-8 px-6 py-2 border border-gray-700 text-white rounded-lg hover:bg-gray-800 transition">Send another</button>
+        </div>
+
+        <form id="contact-form" onsubmit="event.preventDefault();">
+          <div class="mb-6">
+            <label for="nameInput" class="block mb-2 text-sm font-bold text-gray-400">Full Name</label>
+            <input id="nameInput" type="text" placeholder="Jane Doe" required class="w-full bg-gray-950 border border-gray-800 focus:border-green-500 focus:ring-1 focus:ring-green-500 rounded-lg p-4 text-white outline-none transition" />
+          </div>
+          <div class="mb-6">
+            <label for="emailInput" class="block mb-2 text-sm font-bold text-gray-400">Email Address</label>
+            <input id="emailInput" type="email" placeholder="jane@example.com" required class="w-full bg-gray-950 border border-gray-800 focus:border-green-500 focus:ring-1 focus:ring-green-500 rounded-lg p-4 text-white outline-none transition" />
+          </div>
+          <div class="mb-6">
+            <label for="subjectInput" class="block mb-2 text-sm font-bold text-gray-400">Subject</label>
+            <select id="subjectInput" class="w-full bg-gray-950 border border-gray-800 focus:border-green-500 rounded-lg p-4 text-white outline-none appearance-none transition">
+              <option>Technical Support</option>
+              <option>Billing & Sales</option>
+              <option>Feature Request</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="mb-8">
+            <label for="messageInput" class="block mb-2 text-sm font-bold text-gray-400">Message</label>
+            <textarea id="messageInput" rows="5" required placeholder="How can we help you?" class="w-full bg-gray-950 border border-gray-800 focus:border-green-500 focus:ring-1 focus:ring-green-500 rounded-lg p-4 text-white outline-none transition resize-none"></textarea>
+          </div>
+          
+          <button id="send-btn" type="submit" class="w-full bg-green-500 text-black font-black py-4 rounded-xl text-lg hover:bg-green-400 transition shadow-[0_0_15px_rgba(34,197,94,0.3)]">Send Message</button>
+        </form>
+      </div>
+    </div>
+    
+    <div class="w-full lg:w-1/2 flex flex-col justify-center">
+      <div class="bg-gray-950 border border-gray-800 p-8 rounded-2xl mb-8">
+        <h3 class="text-xl font-bold text-white mb-4">Direct Contact</h3>
+        <p class="text-gray-400 mb-6 leading-relaxed">Prefer to email us directly? You can reach our support team at <a href="mailto:support@coderoller.dev" class="text-green-400 hover:underline">support@coderoller.dev</a>.</p>
+        <p class="text-gray-400 text-sm">Our typical response time is under 12 hours during business days (EST).</p>
+      </div>
+      
+      <div class="bg-gray-950 border border-gray-800 p-8 rounded-2xl">
+        <h3 class="text-xl font-bold text-white mb-4">Before you ask...</h3>
+        <ul class="space-y-4 text-sm text-gray-400">
+          <li><strong>Q: Can I get a refund?</strong><br/>A: Yes, we offer a 30-day money-back guarantee for Cloud Pro.</li>
+          <li><strong>Q: Is my data really local?</strong><br/>A: Yes, verify it yourself by checking <code class="bg-gray-800 px-1 rounded text-green-400">~/.coderoller/db.sqlite</code>.</li>
+        </ul>
       </div>
     </div>
   </div>
@@ -88,18 +136,27 @@
 </script>
 
   <script>
-    const btn = document.getElementById('send-btn');
-    btn.addEventListener('click', function() {
-      // But let's say we have an object
-      const formHandler = {
-        sent: false,
-        send: function() {
-          this.sent = true;
-          const p = new Promise((res, rej) => rej("SMTP Error"));
-          p.then(() => console.log("Sent"));
-        }
-      };
-      setTimeout(formHandler.send, 100); 
+    const form = document.getElementById('contact-form');
+    const successMessage = document.getElementById('success-message');
+    const resetBtn = document.getElementById('reset-btn');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('send-btn');
+      btn.innerText = 'Sending...';
+      btn.classList.add('opacity-75', 'cursor-not-allowed');
+      
+      // Simulate API call
+      setTimeout(() => {
+        successMessage.classList.remove('hidden');
+        btn.innerText = 'Send Message';
+        btn.classList.remove('opacity-75', 'cursor-not-allowed');
+      }, 800);
+    });
+
+    resetBtn.addEventListener('click', function() {
+      form.reset();
+      successMessage.classList.add('hidden');
     });
   </script>
 </body>
