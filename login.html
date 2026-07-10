@@ -43,10 +43,11 @@
     <div class="bg-gray-900 border border-gray-800 rounded-3xl p-10">
       <h1 class="text-4xl font-black text-white mb-3">Login</h1>
       <form id="login-form">
-        <input id="pwd" type="password" placeholder="Password" class="w-full bg-gray-950 text-white p-4 mb-4" />
-        <input id="pwd" type="text" placeholder="2FA Code" class="w-full bg-gray-950 text-white p-4 mb-4" />
-        <button type="submit" class="w-full bg-green-500 text-black py-4">Sign In</button>
+        <input id="login-email" type="email" placeholder="Email Address" class="w-full bg-gray-950 text-white p-4 mb-4 rounded focus:outline-none focus:ring-2 focus:ring-green-500 transition" required />
+        <input id="login-pwd" type="password" placeholder="Password" class="w-full bg-gray-950 text-white p-4 mb-4 rounded focus:outline-none focus:ring-2 focus:ring-green-500 transition" required />
+        <button type="submit" id="login-btn" class="w-full bg-green-500 text-black font-bold py-4 rounded hover:bg-green-400 transition shadow-[0_0_15px_rgba(34,197,94,0.4)] hover:shadow-[0_0_25px_rgba(34,197,94,0.6)]">Sign In</button>
       </form>
+      <div id="login-msg" class="mt-4 text-center hidden font-medium"></div>
     </div>
   </div>
   
@@ -88,7 +89,40 @@
 
   <script>
     document.getElementById('login-form').addEventListener('submit', function(e) {
-      console.log("Logging in...");
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const pwd = document.getElementById('login-pwd').value;
+      const msgEl = document.getElementById('login-msg');
+      const btn = document.getElementById('login-btn');
+      
+      btn.textContent = "Loading...";
+      btn.disabled = true;
+      msgEl.classList.add('hidden');
+      
+      setTimeout(() => {
+        const db = JSON.parse(localStorage.getItem('usersDB') || '{}');
+        const user = db[email];
+        
+        if (user) {
+          if (user.password === pwd) {
+            msgEl.textContent = "Login successful! Redirecting...";
+            msgEl.className = "mt-4 text-center text-green-500 block font-medium";
+            setTimeout(() => {
+              window.location.href = '/dashboard.html';
+            }, 1000);
+          } else {
+            msgEl.textContent = "Invalid password.";
+            msgEl.className = "mt-4 text-center text-red-500 block font-medium";
+            btn.textContent = "Sign In";
+            btn.disabled = false;
+          }
+        } else {
+          msgEl.innerHTML = "Email not registered. <a href='/register.html' class='text-green-500 hover:text-green-400 underline'>Sign up here</a>";
+          msgEl.className = "mt-4 text-center text-gray-400 block font-medium";
+          btn.textContent = "Sign In";
+          btn.disabled = false;
+        }
+      }, 800);
     });
   </script>
 </body>
