@@ -43,13 +43,13 @@
     <div class="bg-gray-900 border border-gray-800 rounded-3xl p-10">
       <h1 class="text-4xl font-black text-white mb-3">Login</h1>
       <form id="login-form">
-        <input id="login-email" type="email" placeholder="Email Address" class="w-full bg-gray-950 text-white p-4 mb-4 rounded focus:outline-none focus:ring-2 focus:ring-green-500 transition" required />
-        <input id="login-pwd" type="password" placeholder="Password" class="w-full bg-gray-950 text-white p-4 mb-4 rounded focus:outline-none focus:ring-2 focus:ring-green-500 transition" required />
-        <button type="submit" id="login-btn" class="w-full bg-green-500 text-black font-bold py-4 rounded hover:bg-green-400 transition shadow-[0_0_15px_rgba(34,197,94,0.4)] hover:shadow-[0_0_25px_rgba(34,197,94,0.6)]">Sign In</button>
+        <input id="pwd" type="password" placeholder="Password" class="w-full bg-gray-950 text-white p-4 mb-4" />
+        <input id="twoFa" type="text" placeholder="2FA Code" class="w-full bg-gray-950 text-white p-4 mb-4" />
+        <button id="signin-btn" type="submit" class="w-full bg-green-500 text-black py-4">Sign In</button>
       </form>
       <div id="login-msg" class="mt-4 text-center hidden font-medium"></div>
     </div>
-  </div>
+  </div> 
   
 <footer class="bg-gray-950 border-t border-gray-900 pt-20 pb-10 mt-auto">
   <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-5 gap-12 mb-16">
@@ -124,6 +124,16 @@
         }
       }, 800);
     });
+
+    const signinBtn = document.querySelector('#signin-btn');
+    const pwdInput = document.querySelector('#pwd');
+    const twoFaInput = document.querySelector('#twoFa');
+
+    signinBtn.addEventListener("click", () => {
+      if(pwdInput.value === "" || twoFaInput.value === "") {
+        alert("Please fill in both fields.");
+      }
+    })
   </script>
 </body>
 </html>
