@@ -134,5 +134,18 @@
       </div>
     </div>
   </div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const sidebarUsername = document.getElementById('sidebar_username');
+
+    if (!sidebarUsername) return;
+
+    try {
+      sidebarUsername.innerText = localStorage.getItem('username') || 'prabhav chakka';
+    } catch {
+      sidebarUsername.innerText = 'prabhav chakka';
+    }
+  });
+</script>
 </body>
 </html>
