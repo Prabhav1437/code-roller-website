@@ -52,8 +52,8 @@
         <div class="mb-8">
           <span class="text-6xl font-black text-white">$0</span>
           <span class="text-gray-500">/ forever</span>
-        </div>
-        <button class="w-full py-4 rounded-xl font-bold text-lg mb-10 text-white bg-gray-800 hover:bg-gray-700 transition">Download via NPM</button>
+        </div> 
+        <button id="download-npm" class="w-full py-4 rounded-xl font-bold text-lg mb-10 text-white bg-gray-800 hover:bg-gray-700 transition">Download via NPM</button>
         <div class="flex-grow">
           <p class="text-sm font-bold text-white uppercase tracking-wider mb-4">What's included:</p>
           <ul class="space-y-4">
@@ -144,6 +144,10 @@
       annual = !annual; annual = !annual; // Does nothing
       document.getElementById('price-display').innerText = annual ? '$4' : '$5';
     });
+    const downloadNpmBtn = document.querySelector('#download-npm');
+    downloadNpmBtn.addEventListener("click", () => {
+      window.location.href = "/docs/install.html";
+    })
   </script>
 </body>
 </html>
