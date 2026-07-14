@@ -1,74 +1,285 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profile | Coderoller</title>
   <link rel="stylesheet" href="/src/style.css">
   <script type="module" src="/src/polyfills.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    .fade-in-up {
+      animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .delay-100 { animation-delay: 100ms; }
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #020617; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #334155; }
+  </style>
 </head>
-
-<body class="bg-gray-950 flex font-sans">
-
-  <div class="w-72 bg-gray-950 border-r border-gray-900 hidden md:flex flex-col flex-shrink-0 min-h-screen">
-    <div class="p-6 border-b border-gray-900">
-      <p id="sidebar_username" class="font-bold text-white">prabhav chakka</p>
-    </div>
-    <div class="p-4 flex-grow">
-      <ul class="space-y-2 mb-8">
-        <li><a href="/dashboard.html" class="block px-4 py-3 text-gray-400 hover:text-white">Overview</a></li>
-        <li><a href="/analytics.html" class="block px-4 py-3 text-gray-400 hover:text-white">Deep Analytics</a></li>
-      </ul>
-      <ul class="space-y-2">
-        <li><a href="/profile.html" class="block px-4 py-3 text-gray-400 hover:text-white">My Profile</a></li>
-        <li><a href="/settings.html" class="block px-4 py-3 text-gray-400 hover:text-white">Settings</a></li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="flex-grow p-8 max-w-5xl mx-auto h-screen overflow-y-auto">
-    <h1 class="text-3xl font-black text-white mb-8">My Profile</h1>
-
-    <div class="bg-gray-900 border border-gray-800 rounded-3xl p-8 max-w-xl">
-      <h2 class="text-xl font-bold text-white mb-6">Profile Settings</h2>
-
-      <div class="mb-6">
-        <label for="name" class="block mb-2 text-sm font-bold text-gray-400">Display Name</label>
-        <input type="text" id="name"
-          class="w-full bg-gray-950 border border-gray-700 rounded-xl p-4 text-white focus:outline-none focus:border-green-500 transition"
-          placeholder="Enter display name" />
+<body class="bg-gray-950 flex flex-col md:flex-row font-sans text-gray-100 min-h-screen overflow-hidden">
+  
+  <!-- Mobile Header -->
+  <div class="md:hidden flex items-center justify-between p-4 border-b border-gray-900 bg-gray-950/80 backdrop-blur-md sticky top-0 z-50">
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 rounded bg-green-500/20 flex items-center justify-center border border-green-500/30">
+        <i data-lucide="code-2" class="w-5 h-5 text-green-400"></i>
       </div>
+      <span class="font-bold text-lg tracking-tight">Coderoller</span>
+    </div>
+    <button id="mobile-menu-btn" class="p-2 text-gray-400 hover:text-white transition-colors">
+      <i data-lucide="menu" class="w-6 h-6"></i>
+    </button>
+  </div>
 
-      <button id="save-btn"
-        class="px-6 py-3.5 bg-green-500 text-black font-bold rounded-xl hover:bg-green-400 transition shadow-[0_0_15px_rgba(34,197,94,0.2)]">Save
-        Changes</button>
-
-      <p id="save-feedback" class="mt-4 text-sm text-green-400 hidden font-bold">Don't TOUCH Me UwU</p>
+  <!-- Sidebar -->
+  <div id="sidebar" class="fixed inset-y-0 left-0 z-40 w-72 bg-gray-950 border-r border-gray-900 flex-col flex-shrink-0 min-h-screen transform -translate-x-full md:translate-x-0 md:static transition-transform duration-300 ease-in-out md:flex">
+    <div class="p-6 border-b border-gray-900 flex items-center gap-3 hidden md:flex">
+      <div class="w-8 h-8 rounded bg-green-500/20 flex items-center justify-center border border-green-500/30">
+        <i data-lucide="code-2" class="w-5 h-5 text-green-400"></i>
+      </div>
+      <span class="font-bold text-lg tracking-tight text-white">Coderoller</span>
+    </div>
+    
+    <div class="p-4 flex-grow overflow-y-auto">
+      <p class="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 mt-4">Menu</p>
+      <ul class="space-y-1 mb-8">
+        <li>
+          <a href="/dashboard.html" class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-gray-900/40 rounded-xl transition-all group">
+            <i data-lucide="layout-dashboard" class="w-5 h-5 group-hover:text-green-400 transition-colors"></i>
+            <span class="font-medium">Overview</span>
+          </a>
+        </li>
+        <li>
+          <a href="/analytics.html" class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-gray-900/40 rounded-xl transition-all group">
+            <i data-lucide="bar-chart-3" class="w-5 h-5 group-hover:text-blue-400 transition-colors"></i>
+            <span class="font-medium">Deep Analytics</span>
+          </a>
+        </li>
+      </ul>
+      
+      <p class="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Account</p>
+      <ul class="space-y-1">
+        <li>
+          <a href="/profile.html" class="flex items-center gap-3 px-4 py-3 bg-gray-900/50 text-white rounded-xl border border-gray-800 transition-all shadow-[0_0_15px_rgba(168,85,247,0.05)]">
+            <i data-lucide="user" class="w-5 h-5 text-purple-400"></i>
+            <span class="font-medium">My Profile</span>
+          </a>
+        </li>
+        <li>
+          <a href="/settings.html" class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-gray-900/40 rounded-xl transition-all group">
+            <i data-lucide="settings" class="w-5 h-5 group-hover:text-gray-200 transition-colors"></i>
+            <span class="font-medium">Settings</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    
+    <div class="p-4 border-t border-gray-900">
+      <div class="flex items-center gap-3 px-4 py-3 bg-gray-900/30 rounded-xl border border-gray-800/50">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-green-500 to-blue-500 p-[2px]">
+          <img src="https://ui-avatars.com/api/?name=Prabhav+Chakka&background=0D1117&color=fff" alt="User" class="w-full h-full rounded-full border-2 border-gray-950">
+        </div>
+        <div class="flex-1 overflow-hidden">
+          <p id="sidebar_username" class="font-bold text-sm text-white truncate">prabhav chakka</p>
+          <p class="text-xs text-green-400 font-medium">Pro Plan</p>
+        </div>
+      </div>
     </div>
   </div>
+
+  <!-- Main Content Overlay (Mobile) -->
+  <div id="mobile-overlay" class="fixed inset-0 bg-gray-950/80 backdrop-blur-sm z-30 hidden md:hidden"></div>
+
+  <!-- Main Area -->
+  <main class="flex-1 h-screen overflow-y-auto p-4 md:p-8 lg:p-10 relative">
+    <header class="mb-10 fade-in-up">
+      <h1 class="text-3xl sm:text-4xl font-black text-white tracking-tight flex items-center gap-3">
+        <i data-lucide="user" class="w-8 h-8 text-purple-400"></i> My Profile
+      </h1>
+      <p class="text-gray-400 mt-2 text-sm">Manage your personal information and preferences.</p>
+    </header>
+
+    <div class="bg-gray-900/40 backdrop-blur-xl border border-gray-800/80 rounded-3xl p-6 md:p-8 max-w-xl shadow-2xl fade-in-up delay-100 relative overflow-hidden">
+      <!-- Decorative background glow -->
+      <div class="absolute -top-10 -right-10 w-40 h-40 bg-purple-500/10 blur-[80px] rounded-full pointer-events-none"></div>
+      
+      <div class="relative z-10">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
+          <h2 class="text-xl font-bold text-white flex items-center gap-2"><i data-lucide="shield" class="w-5 h-5 text-gray-400"></i> Profile Settings</h2>
+          <div class="flex items-center gap-3">
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Trust Score</span>
+            <div class="w-32 bg-gray-950 border border-gray-800 h-2.5 rounded-full overflow-hidden">
+              <div id="trust-bar" class="bg-gradient-to-r from-purple-600 to-purple-400 h-full w-[20%] transition-all duration-1000 shadow-[0_0_10px_rgba(168,85,247,0.5)]"></div>
+            </div>
+            <span id="trust-percent" class="text-sm font-black text-purple-400">20%</span>
+          </div>
+        </div>
+
+        <div class="space-y-5 mb-8">
+          <!-- Display Name -->
+          <div class="group">
+            <label for="name" class="block mb-1.5 text-sm font-bold text-gray-400 group-focus-within:text-purple-400 transition-colors">Display Name</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <i data-lucide="at-sign" class="w-5 h-5 text-gray-500 group-focus-within:text-purple-400 transition-colors"></i>
+              </div>
+              <input type="text" id="name" class="w-full bg-gray-950/80 border border-gray-800 rounded-xl py-3 pl-12 pr-4 text-white placeholder-gray-600 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all shadow-inner" placeholder="Enter display name" />
+            </div>
+          </div>
+          
+          <!-- Bio -->
+          <div class="group">
+            <label for="bio" class="block mb-1.5 text-sm font-bold text-gray-400 group-focus-within:text-purple-400 transition-colors">Bio</label>
+            <textarea id="bio" class="w-full bg-gray-950/80 border border-gray-800 rounded-xl py-3 px-4 text-white placeholder-gray-600 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all shadow-inner" rows="3" placeholder="Tell us about yourself..."></textarea>
+          </div>
+          
+          <!-- Location -->
+          <div class="group">
+            <label for="location" class="block mb-1.5 text-sm font-bold text-gray-400 group-focus-within:text-purple-400 transition-colors">Location</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <i data-lucide="map-pin" class="w-5 h-5 text-gray-500 group-focus-within:text-purple-400 transition-colors"></i>
+              </div>
+              <input type="text" id="location" class="w-full bg-gray-950/80 border border-gray-800 rounded-xl py-3 pl-12 pr-4 text-white placeholder-gray-600 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all shadow-inner" placeholder="e.g. San Francisco, CA" />
+            </div>
+          </div>
+
+          <!-- Two-column grid for links -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div class="group">
+              <label for="github" class="block mb-1.5 text-sm font-bold text-gray-400 group-focus-within:text-purple-400 transition-colors">GitHub Username</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <i data-lucide="github" class="w-5 h-5 text-gray-500 group-focus-within:text-purple-400 transition-colors"></i>
+                </div>
+                <input type="text" id="github" class="w-full bg-gray-950/80 border border-gray-800 rounded-xl py-3 pl-12 pr-4 text-white placeholder-gray-600 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all shadow-inner" placeholder="username" />
+              </div>
+            </div>
+            
+            <div class="group">
+              <label for="website" class="block mb-1.5 text-sm font-bold text-gray-400 group-focus-within:text-purple-400 transition-colors">Website URL</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <i data-lucide="globe" class="w-5 h-5 text-gray-500 group-focus-within:text-purple-400 transition-colors"></i>
+                </div>
+                <input type="url" id="website" class="w-full bg-gray-950/80 border border-gray-800 rounded-xl py-3 pl-12 pr-4 text-white placeholder-gray-600 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all shadow-inner" placeholder="https://..." />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button id="save-btn"
+          class="w-full sm:w-auto px-8 py-3.5 bg-purple-600 text-white font-bold rounded-xl hover:bg-purple-500 transition-all shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] active:scale-95 flex items-center justify-center gap-2">
+          <i data-lucide="save" class="w-4 h-4"></i> Save Changes
+        </button>
+
+        <div id="save-feedback" class="mt-4 p-3 bg-green-500/10 border border-green-500/20 rounded-lg flex items-center gap-2 text-sm text-green-400 font-bold hidden opacity-0 transition-opacity duration-300">
+          <i data-lucide="check-circle-2" class="w-4 h-4"></i> Don't TOUCH Me UwU
+        </div>
+      </div>
+    </div>
+  </main>
+  
   <script>
-    const loadProfile = () => {
-      const storedName = localStorage.getItem('username') || 'prabhav chakka';
-      document.getElementById('name').value = storedName;
-      document.getElementById('sidebar_username').innerText = storedName;
-    };
+    // Initialize Lucide icons
+    if (window.lucide) {
+      lucide.createIcons();
+    } else {
+      const script = document.createElement('script');
+      script.src = 'https://unpkg.com/lucide@latest';
+      script.onload = () => lucide.createIcons();
+      document.head.appendChild(script);
+    }
 
-    loadProfile();
+    document.addEventListener('DOMContentLoaded', () => {
+      // Sidebar logic
+      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+      const sidebar = document.getElementById('sidebar');
+      const mobileOverlay = document.getElementById('mobile-overlay');
 
-    document.getElementById('save-btn').addEventListener('click', () => {
-      const newName = document.getElementById('name').value.trim();
-      if (newName) {
-        localStorage.setItem('username', newName);
-        document.getElementById('sidebar_username').innerText = newName;
-
-        const feedback = document.getElementById('save-feedback');
-        feedback.classList.remove('hidden');
-        setTimeout(() => {
-          feedback.classList.add('hidden');
-        }, 3000);
+      if (mobileMenuBtn && sidebar && mobileOverlay) {
+        const toggleMenu = () => {
+          const isClosed = sidebar.classList.contains('-translate-x-full');
+          if (isClosed) {
+            sidebar.classList.remove('-translate-x-full');
+            mobileOverlay.classList.remove('hidden');
+          } else {
+            sidebar.classList.add('-translate-x-full');
+            mobileOverlay.classList.add('hidden');
+          }
+        };
+        mobileMenuBtn.addEventListener('click', toggleMenu);
+        mobileOverlay.addEventListener('click', toggleMenu);
       }
+
+      // Existing Profile Logic
+      const calculateTrust = () => {
+        const fields = ['username', 'bio', 'location', 'github', 'website'];
+        let filledCount = 0;
+        fields.forEach(field => {
+          if (localStorage.getItem(field) && localStorage.getItem(field).trim() !== '') filledCount++;
+        });
+        const percentage = Math.round((filledCount / fields.length) * 100);
+        document.getElementById('trust-bar').style.width = percentage + '%';
+        document.getElementById('trust-percent').innerText = percentage + '%';
+      };
+
+      const loadProfile = () => {
+        const storedName = localStorage.getItem('username') || 'prabhav chakka';
+        document.getElementById('name').value = storedName;
+        document.getElementById('bio').value = localStorage.getItem('bio') || '';
+        document.getElementById('location').value = localStorage.getItem('location') || '';
+        document.getElementById('github').value = localStorage.getItem('github') || '';
+        document.getElementById('website').value = localStorage.getItem('website') || '';
+        
+        const sidebarUsername = document.getElementById('sidebar_username');
+        if(sidebarUsername) sidebarUsername.innerText = storedName;
+        
+        calculateTrust();
+      };
+
+      loadProfile();
+
+      document.getElementById('save-btn').addEventListener('click', () => {
+        const newName = document.getElementById('name').value.trim();
+        const bio = document.getElementById('bio').value.trim();
+        const loc = document.getElementById('location').value.trim();
+        const github = document.getElementById('github').value.trim();
+        const website = document.getElementById('website').value.trim();
+        
+        if (newName) {
+          localStorage.setItem('username', newName);
+          localStorage.setItem('bio', bio);
+          localStorage.setItem('location', loc);
+          localStorage.setItem('github', github);
+          localStorage.setItem('website', website);
+          
+          const sidebarUsername = document.getElementById('sidebar_username');
+          if(sidebarUsername) sidebarUsername.innerText = newName;
+          
+          calculateTrust();
+
+          const feedback = document.getElementById('save-feedback');
+          feedback.classList.remove('hidden');
+          // Add opacity transition for smooth appearance
+          requestAnimationFrame(() => {
+            feedback.style.opacity = '1';
+          });
+          
+          setTimeout(() => {
+            feedback.style.opacity = '0';
+            setTimeout(() => feedback.classList.add('hidden'), 300);
+          }, 3000);
+        }
+      });
     });
   </script>
 </body>
-
 </html>
