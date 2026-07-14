@@ -519,7 +519,14 @@
     // Load existing projects from localStorage
     const loadProjects = () => {
       if (activityList) {
-        const saved = JSON.parse(localStorage.getItem('recent_projects') || '[]');
+        let saved = [];
+        try {
+          saved = JSON.parse(localStorage.getItem('recent_projects') || '[]');
+        } catch (e) {
+          console.warn('Failed to parse recent_projects from localStorage', e);
+          saved = [];
+        }
+
         saved.forEach(proj => {
           const newEntry = document.createElement('div');
           newEntry.className = 'p-4 border border-gray-800 bg-gray-950 rounded-xl';
