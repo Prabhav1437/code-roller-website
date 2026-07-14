@@ -42,8 +42,12 @@
   <div class="flex-grow flex items-center justify-center p-6 py-24">
     <div class="bg-gray-900 border border-gray-800 rounded-3xl p-12">
       <h1 class="text-4xl font-black text-white mb-3">Register</h1>
-      <input id="pwd" type="password" placeholder="Master Password" class="w-full bg-gray-950 text-white p-4 mb-4" />
-      <button id="reg-btn" class="w-full bg-white text-black py-4">Initialize Workspace</button>
+      <form id="register-form">
+        <input id="reg-email" type="email" placeholder="Email Address" class="w-full bg-gray-950 text-white p-4 mb-4 rounded focus:outline-none focus:ring-2 focus:ring-green-500 transition" required />
+        <input id="reg-pwd" type="password" placeholder="Master Password" class="w-full bg-gray-950 text-white p-4 mb-4 rounded focus:outline-none focus:ring-2 focus:ring-green-500 transition" required />
+        <button type="submit" id="reg-btn" class="w-full bg-white text-black font-bold py-4 rounded hover:bg-gray-200 transition shadow-[0_0_15px_rgba(255,255,255,0.4)] hover:shadow-[0_0_25px_rgba(255,255,255,0.6)]">Initialize Workspace</button>
+      </form>
+      <div id="reg-msg" class="mt-4 text-center hidden font-medium"></div>
     </div>
   </div>
   
@@ -84,11 +88,28 @@
 </script>
 
   <script>
-    document.getElementById('reg-btn').addEventListener('click', function() {
-      const pwd = document.getElementById('pwd').value;
-      const regex = /^([a-zA-Z0-9]+\s?)*$/;
-      const isValid = regex.test(pwd);
-      console.log(isValid);
+    document.getElementById('register-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = document.getElementById('reg-email').value;
+      const pwd = document.getElementById('reg-pwd').value;
+      const msgEl = document.getElementById('reg-msg');
+      const btn = document.getElementById('reg-btn');
+      
+      const db = JSON.parse(localStorage.getItem('usersDB') || '{}');
+      if (db[email]) {
+        msgEl.textContent = "Email already registered.";
+        msgEl.className = "mt-4 text-center text-red-500 block font-medium";
+      } else {
+        db[email] = { password: pwd };
+        localStorage.setItem('usersDB', JSON.stringify(db));
+        msgEl.textContent = "Registration successful! Redirecting to login...";
+        msgEl.className = "mt-4 text-center text-green-500 block font-medium";
+        btn.disabled = true;
+        btn.textContent = "Initializing...";
+        setTimeout(() => {
+          window.location.href = '/login.html';
+        }, 1500);
+      }
     });
   </script>
 </body>
