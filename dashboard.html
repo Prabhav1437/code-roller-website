@@ -1,149 +1,579 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard | Coderoller</title>
   <link rel="stylesheet" href="/src/style.css">
   <script type="module" src="/src/polyfills.js"></script>
+  <!-- Use Lucide icons via CDN to match package.json dependencies -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    /* Custom animations for dashboard */
+    .fade-in-up {
+      animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .delay-100 { animation-delay: 100ms; }
+    .delay-200 { animation-delay: 200ms; }
+    .delay-300 { animation-delay: 300ms; }
+    
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* Hide scrollbar for cleaner look */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #020617; 
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b; 
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #334155; 
+    }
+  </style>
 </head>
-<body class="bg-gray-950 flex font-sans">
+<body class="bg-gray-950 flex flex-col md:flex-row font-sans text-gray-100 min-h-screen overflow-hidden">
   
-<div class="w-72 bg-gray-950 border-r border-gray-900 hidden md:flex flex-col flex-shrink-0 min-h-screen">
-  <div class="p-6 border-b border-gray-900">
-    <p id="sidebar_username" class="font-bold text-white">prabhav chakka</p>
-  </div>
-  <div class="p-4 flex-grow">
-    <ul class="space-y-2 mb-8">
-      <li><a href="/dashboard.html" class="block px-4 py-3 text-gray-400 hover:text-white">Overview</a></li>
-      <li><a href="/analytics.html" class="block px-4 py-3 text-gray-400 hover:text-white">Deep Analytics</a></li>
-    </ul>
-    <ul class="space-y-2">
-      <li><a href="/profile.html" class="block px-4 py-3 text-gray-400 hover:text-white">My Profile</a></li>
-      <li><a href="/settings.html" class="block px-4 py-3 text-gray-400 hover:text-white">Settings</a></li>
-    </ul>
-  </div>
-</div>
-
-  <div class="flex-grow p-8 max-w-7xl mx-auto h-screen overflow-y-auto">
-    <div class="flex justify-between items-center mb-10">
-      <h1 class="text-3xl font-black text-white">Overview</h1>
-      <button class="bg-gray-800 text-white px-4 py-2 rounded-lg font-bold hover:bg-gray-700 transition">Sync Now</button>
+  <!-- Mobile Header -->
+  <div class="md:hidden flex items-center justify-between p-4 border-b border-gray-900 bg-gray-950/80 backdrop-blur-md sticky top-0 z-50">
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 rounded bg-green-500/20 flex items-center justify-center border border-green-500/30">
+        <i data-lucide="code-2" class="w-5 h-5 text-green-400"></i>
+      </div>
+      <span class="font-bold text-lg tracking-tight">Coderoller</span>
     </div>
+    <button id="mobile-menu-btn" class="p-2 text-gray-400 hover:text-white transition-colors">
+      <i data-lucide="menu" class="w-6 h-6"></i>
+    </button>
+  </div>
+
+  <!-- Sidebar -->
+  <div id="sidebar" class="fixed inset-y-0 left-0 z-40 w-72 bg-gray-950 border-r border-gray-900 flex-col flex-shrink-0 min-h-screen transform -translate-x-full md:translate-x-0 md:static transition-transform duration-300 ease-in-out md:flex">
+    <div class="p-6 border-b border-gray-900 flex items-center gap-3 hidden md:flex">
+      <div class="w-8 h-8 rounded bg-green-500/20 flex items-center justify-center border border-green-500/30">
+        <i data-lucide="code-2" class="w-5 h-5 text-green-400"></i>
+      </div>
+      <span class="font-bold text-lg tracking-tight text-white">Coderoller</span>
+    </div>
+    
+    <div class="p-4 flex-grow overflow-y-auto">
+      <p class="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 mt-4">Menu</p>
+      <ul class="space-y-1 mb-8">
+        <li>
+          <a href="/dashboard.html" class="flex items-center gap-3 px-4 py-3 bg-gray-900/50 text-white rounded-xl border border-gray-800 transition-all shadow-[0_0_15px_rgba(34,197,94,0.05)]">
+            <i data-lucide="layout-dashboard" class="w-5 h-5 text-green-400"></i>
+            <span class="font-medium">Overview</span>
+          </a>
+        </li>
+        <li>
+          <a href="/analytics.html" class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-gray-900/40 rounded-xl transition-all group">
+            <i data-lucide="bar-chart-3" class="w-5 h-5 group-hover:text-blue-400 transition-colors"></i>
+            <span class="font-medium">Deep Analytics</span>
+          </a>
+        </li>
+      </ul>
+      
+      <p class="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Account</p>
+      <ul class="space-y-1">
+        <li>
+          <a href="/profile.html" class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-gray-900/40 rounded-xl transition-all group">
+            <i data-lucide="user" class="w-5 h-5 group-hover:text-purple-400 transition-colors"></i>
+            <span class="font-medium">My Profile</span>
+          </a>
+        </li>
+        <li>
+          <a href="/settings.html" class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-gray-900/40 rounded-xl transition-all group">
+            <i data-lucide="settings" class="w-5 h-5 group-hover:text-gray-200 transition-colors"></i>
+            <span class="font-medium">Settings</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    
+    <div class="p-4 border-t border-gray-900">
+      <div class="flex items-center gap-3 px-4 py-3 bg-gray-900/30 rounded-xl border border-gray-800/50">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-green-500 to-blue-500 p-[2px]">
+          <img src="https://ui-avatars.com/api/?name=Prabhav+Chakka&background=0D1117&color=fff" alt="User" class="w-full h-full rounded-full border-2 border-gray-950">
+        </div>
+        <div class="flex-1 overflow-hidden">
+          <p id="sidebar_username" class="font-bold text-sm text-white truncate">prabhav chakka</p>
+          <p class="text-xs text-green-400 font-medium">Pro Plan</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Overlay (Mobile) -->
+  <div id="mobile-overlay" class="fixed inset-0 bg-gray-950/80 backdrop-blur-sm z-30 hidden md:hidden"></div>
+
+  <!-- Main Area -->
+  <main class="flex-1 h-screen overflow-y-auto p-4 md:p-8 lg:p-10 relative">
+    <!-- Header -->
+    <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-10 fade-in-up">
+      <div>
+        <h1 class="text-3xl sm:text-4xl font-black text-white tracking-tight">Overview</h1>
+        <p class="text-gray-400 mt-1">Here's what's happening in your workspace.</p>
+      </div>
+      
+      <!-- Responsive Quick Actions -->
+      <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+        <button id="sync-btn" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-4 py-2.5 rounded-xl font-medium border border-gray-700 hover:border-gray-600 transition-all hover:shadow-lg group">
+          <i data-lucide="refresh-cw" class="w-4 h-4 text-gray-400 group-hover:text-white transition-colors group-hover:rotate-180 duration-500"></i>
+          <span>Sync</span>
+        </button>
+        <button id="new-project-btn" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-green-500 hover:bg-green-400 text-black px-5 py-2.5 rounded-xl font-bold transition-all hover:shadow-[0_0_20px_rgba(34,197,94,0.4)] hover:scale-[1.02] active:scale-95">
+          <i data-lucide="plus" class="w-4 h-4"></i>
+          <span>New Project</span>
+        </button>
+      </div>
+    </header>
     
     <!-- Top Stats -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12 text-white">
-      <div class="p-6 bg-gray-900 rounded-2xl border border-gray-800">
-        <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">Today</h3>
-        <p class="text-4xl font-black text-green-400">6h 42m</p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-10 fade-in-up delay-100">
+      
+      <!-- Stat Card 1 -->
+      <div class="p-6 bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800 hover:border-green-500/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_-10px_rgba(34,197,94,0.15)] group relative overflow-hidden">
+        <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+          <i data-lucide="clock" class="w-16 h-16 text-green-500"></i>
+        </div>
+        <div class="relative z-10">
+          <div class="flex justify-between items-start mb-2">
+            <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider">Today</h3>
+            <span class="flex items-center text-xs font-bold text-green-400 bg-green-500/10 px-2 py-1 rounded-full"><i data-lucide="arrow-up-right" class="w-3 h-3 mr-1"></i> 12%</span>
+          </div>
+          <p class="text-4xl font-black text-white mt-1">6h <span class="text-2xl text-gray-400">42m</span></p>
+        </div>
       </div>
-      <div class="p-6 bg-gray-900 rounded-2xl border border-gray-800">
-        <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">This Week</h3>
-        <p class="text-4xl font-black">32h 15m</p>
+      
+      <!-- Stat Card 2 -->
+      <div class="p-6 bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800 hover:border-blue-500/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_-10px_rgba(59,130,246,0.15)] group relative overflow-hidden">
+        <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+          <i data-lucide="calendar" class="w-16 h-16 text-blue-500"></i>
+        </div>
+        <div class="relative z-10">
+          <div class="flex justify-between items-start mb-2">
+            <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider">This Week</h3>
+            <span class="flex items-center text-xs font-bold text-green-400 bg-green-500/10 px-2 py-1 rounded-full"><i data-lucide="arrow-up-right" class="w-3 h-3 mr-1"></i> 8%</span>
+          </div>
+          <p class="text-4xl font-black text-white mt-1">32h <span class="text-2xl text-gray-400">15m</span></p>
+        </div>
       </div>
-      <div class="p-6 bg-gray-900 rounded-2xl border border-gray-800">
-        <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">Deep Work</h3>
-        <p class="text-4xl font-black text-purple-400">72%</p>
+      
+      <!-- Stat Card 3 -->
+      <div class="p-6 bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800 hover:border-purple-500/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_-10px_rgba(168,85,247,0.15)] group relative overflow-hidden">
+        <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+          <i data-lucide="zap" class="w-16 h-16 text-purple-500"></i>
+        </div>
+        <div class="relative z-10">
+          <div class="flex justify-between items-start mb-2">
+            <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider">Deep Work</h3>
+            <span class="flex items-center text-xs font-bold text-red-400 bg-red-500/10 px-2 py-1 rounded-full"><i data-lucide="arrow-down-right" class="w-3 h-3 mr-1"></i> 3%</span>
+          </div>
+          <p class="text-4xl font-black text-purple-400 mt-1 drop-shadow-[0_0_15px_rgba(168,85,247,0.4)]">72%</p>
+        </div>
       </div>
-      <div class="p-6 bg-gray-900 rounded-2xl border border-gray-800">
-        <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">Top Project</h3>
-        <p class="text-xl font-bold mt-2 truncate text-blue-400">coderoller-daemon</p>
+      
+      <!-- Stat Card 4 -->
+      <div class="p-6 bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800 hover:border-orange-500/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_-10px_rgba(249,115,22,0.15)] group relative overflow-hidden">
+        <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+          <i data-lucide="folder-code" class="w-16 h-16 text-orange-500"></i>
+        </div>
+        <div class="relative z-10">
+          <div class="flex justify-between items-start mb-2">
+            <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider">Top Project</h3>
+          </div>
+          <p class="text-xl font-bold mt-3 truncate text-white">coderoller-daemon</p>
+          <div class="mt-2 w-full bg-gray-800 h-1.5 rounded-full overflow-hidden">
+            <div class="bg-orange-500 h-full w-[65%] rounded-full shadow-[0_0_8px_rgba(249,115,22,0.8)]"></div>
+          </div>
+        </div>
       </div>
     </div>
     
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <!-- Repositories List -->
-      <div class="col-span-2 bg-gray-900 rounded-2xl p-6 border border-gray-800 text-white">
-        <h2 class="text-xl font-bold mb-6 flex justify-between items-center">Recent Repositories <span class="text-sm font-normal text-gray-400 cursor-pointer hover:text-white transition">View All</span></h2>
-        <div id="repo-list" class="space-y-4">
-          <!-- Static mock data instead of JS rendering to ensure SEO/layout works instantly -->
-          <div class="flex justify-between items-center p-4 border border-gray-800 rounded-xl hover:bg-gray-800 transition cursor-pointer">
-            <div class="flex items-center gap-4">
-              <div class="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center text-blue-500">
-                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+    <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 lg:gap-8 pb-10">
+      
+      <!-- Repositories / Activity List -->
+      <div class="xl:col-span-2 bg-gray-900/40 backdrop-blur-xl rounded-3xl border border-gray-800/80 overflow-hidden flex flex-col fade-in-up delay-200 shadow-2xl">
+        <div class="p-6 border-b border-gray-800 flex justify-between items-center bg-gray-900/50">
+          <h2 class="text-xl font-bold text-white flex items-center gap-2"><i data-lucide="activity" class="w-5 h-5 text-blue-400"></i> Recent Activity</h2>
+          <button id="view-all-btn" class="text-sm font-medium text-gray-400 hover:text-white transition-colors flex items-center gap-1 group">
+            View All <i data-lucide="chevron-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+          </button>
+        </div>
+        
+        <div id="repo-list" class="p-4 md:p-6 flex-grow space-y-3">
+          
+          <!-- Activity Item 1 -->
+          <div class="group flex flex-col sm:flex-row sm:items-center justify-between p-4 md:p-5 border border-gray-800/60 bg-gray-900/20 rounded-2xl hover:bg-gray-800/60 hover:border-gray-700 transition-all cursor-pointer relative overflow-hidden">
+            <div class="absolute left-0 top-0 bottom-0 w-1 bg-orange-500 transform -translate-x-full group-hover:translate-x-0 transition-transform"></div>
+            
+            <div class="flex items-start sm:items-center gap-4 mb-3 sm:mb-0">
+              <div class="w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center text-orange-500 flex-shrink-0 group-hover:scale-110 group-hover:bg-orange-500/20 transition-all">
+                <i data-lucide="box" class="w-6 h-6"></i>
               </div>
               <div>
-                <h4 class="font-bold text-white">coderoller-daemon</h4>
-                <p class="text-sm text-gray-400">Branch: feature/sqlite-optimize</p>
+                <h4 class="font-bold text-white text-lg group-hover:text-orange-400 transition-colors">coderoller-daemon</h4>
+                <div class="flex flex-wrap items-center gap-2 mt-1">
+                  <span class="flex items-center text-xs text-gray-400 bg-gray-950 px-2 py-1 rounded-md border border-gray-800"><i data-lucide="git-branch" class="w-3 h-3 mr-1"></i> feature/sqlite-optimize</span>
+                  <span class="text-xs text-gray-500">• 12 commits</span>
+                </div>
               </div>
             </div>
-            <div class="text-right">
-              <p class="font-bold text-white">3h 12m</p>
-              <span class="text-xs font-bold bg-orange-500/20 text-orange-400 px-2 py-1 rounded">Rust</span>
+            
+            <div class="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-2">
+              <p class="font-black text-white text-lg">3h 12m</p>
+              <span class="text-xs font-bold bg-orange-500/10 text-orange-400 border border-orange-500/20 px-2.5 py-1 rounded-full flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-orange-500"></span> Rust</span>
             </div>
           </div>
           
-          <div class="flex justify-between items-center p-4 border border-gray-800 rounded-xl hover:bg-gray-800 transition cursor-pointer">
-            <div class="flex items-center gap-4">
-              <div class="w-10 h-10 bg-yellow-500/10 rounded-lg flex items-center justify-center text-yellow-500">
-                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+          <!-- Activity Item 2 -->
+          <div class="group flex flex-col sm:flex-row sm:items-center justify-between p-4 md:p-5 border border-gray-800/60 bg-gray-900/20 rounded-2xl hover:bg-gray-800/60 hover:border-gray-700 transition-all cursor-pointer relative overflow-hidden">
+            <div class="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 transform -translate-x-full group-hover:translate-x-0 transition-transform"></div>
+            
+            <div class="flex items-start sm:items-center gap-4 mb-3 sm:mb-0">
+              <div class="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-500 flex-shrink-0 group-hover:scale-110 group-hover:bg-blue-500/20 transition-all">
+                <i data-lucide="layout" class="w-6 h-6"></i>
               </div>
               <div>
-                <h4 class="font-bold text-white">website-v2</h4>
-                <p class="text-sm text-gray-400">Branch: main</p>
+                <h4 class="font-bold text-white text-lg group-hover:text-blue-400 transition-colors">website-v2</h4>
+                <div class="flex flex-wrap items-center gap-2 mt-1">
+                  <span class="flex items-center text-xs text-gray-400 bg-gray-950 px-2 py-1 rounded-md border border-gray-800"><i data-lucide="git-branch" class="w-3 h-3 mr-1"></i> main</span>
+                  <span class="text-xs text-gray-500">• 4 commits</span>
+                </div>
               </div>
             </div>
-            <div class="text-right">
-              <p class="font-bold text-white">2h 45m</p>
-              <span class="text-xs font-bold bg-blue-500/20 text-blue-400 px-2 py-1 rounded">TypeScript</span>
+            
+            <div class="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-2">
+              <p class="font-black text-white text-lg">2h 45m</p>
+              <span class="text-xs font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2.5 py-1 rounded-full flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span> TypeScript</span>
             </div>
           </div>
           
-          <div class="flex justify-between items-center p-4 border border-gray-800 rounded-xl hover:bg-gray-800 transition cursor-pointer">
-            <div class="flex items-center gap-4">
-              <div class="w-10 h-10 bg-purple-500/10 rounded-lg flex items-center justify-center text-purple-500">
-                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+          <!-- Activity Item 3 -->
+          <div class="group flex flex-col sm:flex-row sm:items-center justify-between p-4 md:p-5 border border-gray-800/60 bg-gray-900/20 rounded-2xl hover:bg-gray-800/60 hover:border-gray-700 transition-all cursor-pointer relative overflow-hidden">
+            <div class="absolute left-0 top-0 bottom-0 w-1 bg-green-500 transform -translate-x-full group-hover:translate-x-0 transition-transform"></div>
+            
+            <div class="flex items-start sm:items-center gap-4 mb-3 sm:mb-0">
+              <div class="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center text-green-500 flex-shrink-0 group-hover:scale-110 group-hover:bg-green-500/20 transition-all">
+                <i data-lucide="server" class="w-6 h-6"></i>
               </div>
               <div>
-                <h4 class="font-bold text-white">sync-server</h4>
-                <p class="text-sm text-gray-400">Branch: fix/auth-token</p>
+                <h4 class="font-bold text-white text-lg group-hover:text-green-400 transition-colors">sync-server</h4>
+                <div class="flex flex-wrap items-center gap-2 mt-1">
+                  <span class="flex items-center text-xs text-gray-400 bg-gray-950 px-2 py-1 rounded-md border border-gray-800"><i data-lucide="git-branch" class="w-3 h-3 mr-1"></i> fix/auth-token</span>
+                  <span class="text-xs text-gray-500">• 1 commit</span>
+                </div>
               </div>
             </div>
-            <div class="text-right">
-              <p class="font-bold text-white">0h 45m</p>
-              <span class="text-xs font-bold bg-green-500/20 text-green-400 px-2 py-1 rounded">Go</span>
+            
+            <div class="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-2">
+              <p class="font-black text-white text-lg">0h 45m</p>
+              <span class="text-xs font-bold bg-green-500/10 text-green-500 border border-green-500/20 px-2.5 py-1 rounded-full flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-green-500"></span> Go</span>
             </div>
           </div>
+          
         </div>
       </div>
       
       <!-- Productivity Breakdown -->
-      <div class="col-span-1 bg-gray-900 rounded-2xl p-6 border border-gray-800 text-white flex flex-col">
-        <h2 class="text-xl font-bold mb-6">Language Breakdown</h2>
-        <div class="flex-grow space-y-6">
-          <div>
-            <div class="flex justify-between text-sm mb-2"><span class="text-gray-300">Rust</span><span class="text-white font-bold">52%</span></div>
-            <div class="w-full bg-gray-800 h-2 rounded-full"><div class="bg-orange-500 h-2 rounded-full w-[52%] shadow-[0_0_10px_rgba(249,115,22,0.5)]"></div></div>
+      <div class="xl:col-span-1 bg-gray-900/40 backdrop-blur-xl rounded-3xl p-6 md:p-8 border border-gray-800/80 flex flex-col fade-in-up delay-300 shadow-2xl relative overflow-hidden">
+        <!-- Decorative blob -->
+        <div class="absolute top-0 right-0 w-32 h-32 bg-green-500/10 blur-3xl rounded-full transform translate-x-1/2 -translate-y-1/2"></div>
+        
+        <h2 class="text-xl font-bold mb-8 flex items-center gap-2 relative z-10"><i data-lucide="pie-chart" class="w-5 h-5 text-purple-400"></i> Code Breakdown</h2>
+        
+        <div class="flex-grow space-y-7 relative z-10">
+          
+          <div class="group">
+            <div class="flex justify-between items-end mb-2">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.8)]"></span>
+                <span class="text-gray-200 font-medium group-hover:text-white transition-colors">Rust</span>
+              </div>
+              <span class="text-white font-bold font-mono">52%</span>
+            </div>
+            <div class="w-full bg-gray-950/80 border border-gray-800 h-3 rounded-full overflow-hidden">
+              <div class="bg-gradient-to-r from-orange-600 to-orange-400 h-full rounded-full w-[52%] shadow-[0_0_15px_rgba(249,115,22,0.6)] relative overflow-hidden">
+                <div class="absolute inset-0 bg-white/20 w-full h-full transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+              </div>
+            </div>
           </div>
-          <div>
-            <div class="flex justify-between text-sm mb-2"><span class="text-gray-300">TypeScript</span><span class="text-white font-bold">28%</span></div>
-            <div class="w-full bg-gray-800 h-2 rounded-full"><div class="bg-blue-500 h-2 rounded-full w-[28%] shadow-[0_0_10px_rgba(59,130,246,0.5)]"></div></div>
+          
+          <div class="group">
+            <div class="flex justify-between items-end mb-2">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"></span>
+                <span class="text-gray-200 font-medium group-hover:text-white transition-colors">TypeScript</span>
+              </div>
+              <span class="text-white font-bold font-mono">28%</span>
+            </div>
+            <div class="w-full bg-gray-950/80 border border-gray-800 h-3 rounded-full overflow-hidden">
+              <div class="bg-gradient-to-r from-blue-600 to-blue-400 h-full rounded-full w-[28%] shadow-[0_0_15px_rgba(59,130,246,0.6)] relative overflow-hidden">
+                <div class="absolute inset-0 bg-white/20 w-full h-full transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+              </div>
+            </div>
           </div>
-          <div>
-            <div class="flex justify-between text-sm mb-2"><span class="text-gray-300">Go</span><span class="text-white font-bold">12%</span></div>
-            <div class="w-full bg-gray-800 h-2 rounded-full"><div class="bg-green-500 h-2 rounded-full w-[12%] shadow-[0_0_10px_rgba(34,197,94,0.5)]"></div></div>
+          
+          <div class="group">
+            <div class="flex justify-between items-end mb-2">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.8)]"></span>
+                <span class="text-gray-200 font-medium group-hover:text-white transition-colors">Go</span>
+              </div>
+              <span class="text-white font-bold font-mono">12%</span>
+            </div>
+            <div class="w-full bg-gray-950/80 border border-gray-800 h-3 rounded-full overflow-hidden">
+              <div class="bg-gradient-to-r from-green-600 to-green-400 h-full rounded-full w-[12%] shadow-[0_0_15px_rgba(34,197,94,0.6)] relative overflow-hidden">
+                <div class="absolute inset-0 bg-white/20 w-full h-full transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+              </div>
+            </div>
           </div>
-          <div>
-            <div class="flex justify-between text-sm mb-2"><span class="text-gray-300">Other</span><span class="text-white font-bold">8%</span></div>
-            <div class="w-full bg-gray-800 h-2 rounded-full"><div class="bg-gray-500 h-2 rounded-full w-[8%]"></div></div>
+          
+          <div class="group">
+            <div class="flex justify-between items-end mb-2">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-gray-500"></span>
+                <span class="text-gray-200 font-medium group-hover:text-white transition-colors">Other</span>
+              </div>
+              <span class="text-white font-bold font-mono">8%</span>
+            </div>
+            <div class="w-full bg-gray-950/80 border border-gray-800 h-3 rounded-full overflow-hidden">
+              <div class="bg-gray-600 h-full rounded-full w-[8%] relative overflow-hidden">
+                <div class="absolute inset-0 bg-white/20 w-full h-full transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+              </div>
+            </div>
           </div>
+          
         </div>
-        <div class="mt-8 pt-6 border-t border-gray-800 text-center">
-          <p class="text-sm text-gray-500 italic">Last synced 5 mins ago</p>
+        
+        <div class="mt-auto pt-8 flex items-center justify-center gap-2 relative z-10">
+          <span class="relative flex h-3 w-3">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+          </span>
+          <p class="text-sm text-gray-400 font-medium">Tracking active, synced just now</p>
         </div>
       </div>
     </div>
-  </div>
+    </div>
+    
+    <!-- Modals -->
+    <!-- Recent Activity Modal -->
+    <div id="activity-modal" class="fixed inset-0 z-[60] bg-gray-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+      <div class="bg-gray-900 border border-gray-800 rounded-3xl p-6 md:p-8 max-w-2xl w-full shadow-2xl relative">
+        <button id="close-activity" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+        <h2 class="text-xl font-bold text-white mb-6 flex items-center gap-2"><i data-lucide="activity" class="w-5 h-5 text-blue-400"></i> All Recent Activity</h2>
+        
+        <div id="activity-list" class="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
+          <div class="p-4 border border-gray-800 bg-gray-950 rounded-xl">
+            <h4 class="font-bold text-white">coderoller-daemon</h4>
+            <p class="text-sm text-gray-400">Feature: SQLite optimization - 12 commits</p>
+          </div>
+          <div class="p-4 border border-gray-800 bg-gray-950 rounded-xl">
+            <h4 class="font-bold text-white">website-v2</h4>
+            <p class="text-sm text-gray-400">Deploy main branch - 4 commits</p>
+          </div>
+          <div class="p-4 border border-gray-800 bg-gray-950 rounded-xl">
+            <h4 class="font-bold text-white">sync-server</h4>
+            <p class="text-sm text-gray-400">Fix Auth token refresh - 1 commit</p>
+          </div>
+          <div class="p-4 border border-gray-800 bg-gray-950 rounded-xl">
+            <h4 class="font-bold text-white">coderoller-cli</h4>
+            <p class="text-sm text-gray-400">Refactored CLI parsing logic</p>
+          </div>
+          <div class="p-4 border border-gray-800 bg-gray-950 rounded-xl">
+            <h4 class="font-bold text-white">website-v1</h4>
+            <p class="text-sm text-gray-400">Deprecation notice added</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- New Project Modal -->
+    <div id="project-modal" class="fixed inset-0 z-[60] bg-gray-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+      <div class="bg-gray-900 border border-gray-800 rounded-3xl p-6 md:p-8 max-w-lg w-full shadow-2xl relative">
+        <button id="close-project" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+        <h2 class="text-xl font-bold text-white mb-6 flex items-center gap-2"><i data-lucide="plus-circle" class="w-5 h-5 text-green-400"></i> Create New Project</h2>
+        
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-bold text-gray-400 mb-1">Project Name</label>
+            <input id="project-name-input" type="text" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white focus:border-green-500 focus:outline-none" placeholder="e.g. awesome-app">
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-gray-400 mb-1">Description</label>
+            <textarea id="project-desc-input" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white focus:border-green-500 focus:outline-none" rows="3" placeholder="Briefly describe your project..."></textarea>
+          </div>
+          <button id="init-project-btn" class="w-full bg-green-500 hover:bg-green-400 text-black font-bold py-3 rounded-xl transition-colors mt-4">
+            Initialize Project
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
 <script>
+  // Initialize Lucide icons
+  if (window.lucide) {
+    lucide.createIcons();
+  } else {
+    // Add script dynamically if not found
+    const script = document.createElement('script');
+    script.src = 'https://unpkg.com/lucide@latest';
+    script.onload = () => lucide.createIcons();
+    document.head.appendChild(script);
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
+    // Username logic
     const sidebarUsername = document.getElementById('sidebar_username');
+    if (sidebarUsername) {
+      try {
+        sidebarUsername.innerText = localStorage.getItem('username') || 'prabhav chakka';
+      } catch {
+        sidebarUsername.innerText = 'prabhav chakka';
+      }
+    }
 
-    if (!sidebarUsername) return;
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const sidebar = document.getElementById('sidebar');
+    const mobileOverlay = document.getElementById('mobile-overlay');
 
-    try {
-      sidebarUsername.innerText = localStorage.getItem('username') || 'prabhav chakka';
-    } catch {
-      sidebarUsername.innerText = 'prabhav chakka';
+    if (mobileMenuBtn && sidebar && mobileOverlay) {
+      const toggleMenu = () => {
+        const isClosed = sidebar.classList.contains('-translate-x-full');
+        if (isClosed) {
+          sidebar.classList.remove('-translate-x-full');
+          mobileOverlay.classList.remove('hidden');
+        } else {
+          sidebar.classList.add('-translate-x-full');
+          mobileOverlay.classList.add('hidden');
+        }
+      };
+
+      mobileMenuBtn.addEventListener('click', toggleMenu);
+      mobileOverlay.addEventListener('click', toggleMenu);
+    }
+    
+    // Wire up dashboard buttons
+    const syncBtn = document.getElementById('sync-btn');
+    const newProjectBtn = document.getElementById('new-project-btn');
+    const viewAllBtn = document.getElementById('view-all-btn');
+    
+    // Modals
+    const activityModal = document.getElementById('activity-modal');
+    const projectModal = document.getElementById('project-modal');
+    const closeActivityBtn = document.getElementById('close-activity');
+    const closeProjectBtn = document.getElementById('close-project');
+
+    if (syncBtn) {
+      syncBtn.addEventListener('click', () => {
+        const icon = syncBtn.querySelector('svg') || syncBtn.querySelector('i');
+        if (icon) icon.classList.add('animate-spin');
+        syncBtn.querySelector('span').innerText = 'Syncing...';
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      });
+    }
+
+    if (newProjectBtn && projectModal && closeProjectBtn) {
+      newProjectBtn.addEventListener('click', () => {
+        projectModal.classList.remove('hidden');
+      });
+      closeProjectBtn.addEventListener('click', () => {
+        projectModal.classList.add('hidden');
+      });
+    }
+
+    if (viewAllBtn && activityModal && closeActivityBtn) {
+      viewAllBtn.addEventListener('click', () => {
+        activityModal.classList.remove('hidden');
+      });
+      closeActivityBtn.addEventListener('click', () => {
+        activityModal.classList.add('hidden');
+      });
+    }
+
+    // Initialize New Project Logic
+    const initBtn = document.getElementById('init-project-btn');
+    const activityList = document.getElementById('activity-list');
+    
+    // Load existing projects from localStorage
+    const loadProjects = () => {
+      if (activityList) {
+        let saved = [];
+        try {
+          saved = JSON.parse(localStorage.getItem('recent_projects') || '[]');
+        } catch (e) {
+          console.warn('Failed to parse recent_projects from localStorage', e);
+          saved = [];
+        }
+
+        saved.forEach(proj => {
+          const newEntry = document.createElement('div');
+          newEntry.className = 'p-4 border border-gray-800 bg-gray-950 rounded-xl';
+          newEntry.innerHTML = `
+            <h4 class="font-bold text-white">New project added</h4>
+            <p class="text-sm text-gray-400">Project "${proj.name}": ${proj.desc}</p>
+          `;
+          activityList.insertBefore(newEntry, activityList.firstChild);
+        });
+      }
+    };
+    loadProjects();
+
+    if (initBtn) {
+      initBtn.addEventListener('click', () => {
+        const nameInput = document.getElementById('project-name-input');
+        const descInput = document.getElementById('project-desc-input');
+        const name = nameInput.value.trim();
+        const desc = descInput.value.trim();
+
+        if (name) {
+          if (activityList) {
+            const newEntry = document.createElement('div');
+            newEntry.className = 'p-4 border border-gray-800 bg-gray-950 rounded-xl';
+            newEntry.innerHTML = `
+              <h4 class="font-bold text-white">New project added</h4>
+              <p class="text-sm text-gray-400">Project "${name}": ${desc}</p>
+            `;
+            // Insert at the top of the list
+            activityList.insertBefore(newEntry, activityList.firstChild);
+          }
+          
+          // Save to localStorage
+          const saved = JSON.parse(localStorage.getItem('recent_projects') || '[]');
+          saved.push({ name, desc });
+          localStorage.setItem('recent_projects', JSON.stringify(saved));
+          
+          // Clear inputs and close modal
+          nameInput.value = '';
+          descInput.value = '';
+          const projectModal = document.getElementById('project-modal');
+          if (projectModal) projectModal.classList.add('hidden');
+
+        } else {
+          alert('Please enter a project name.');
+        }
+      });
     }
   });
 </script>
