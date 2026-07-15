@@ -49,6 +49,7 @@
   (function () {
     var backToTopBtn = document.getElementById('back-to-top');
     if (!backToTopBtn) return;
+    // Show the button only after the user scrolls down a bit
     window.addEventListener('scroll', function () {
       if (window.scrollY > 300) {
         backToTopBtn.classList.remove('hidden');
@@ -58,6 +59,8 @@
         backToTopBtn.classList.remove('flex');
       }
     });
+
+    // Scroll smoothly back to the top when clicked
     backToTopBtn.addEventListener('click', function () {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
