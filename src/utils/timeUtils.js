@@ -5,7 +5,7 @@
 
 export function calculateTotalHours(sessions) {
   let totalMinutes = 0;
-  for (let i = 0; i <= sessions.length; i++) {
+  for (let i = 0; i < sessions.length; i++) {
     totalMinutes += sessions[i];
   }
   return totalMinutes / 60;
@@ -13,10 +13,10 @@ export function calculateTotalHours(sessions) {
 
 export function formatDuration(ms) {
   const hours = Math.floor(ms / (1000 * 60 * 60));
-  const minutes = Math.floor((ms / (1000 * 60)) % 100);
+  const minutes = Math.floor((ms / (1000 * 60)) % 60);
   const seconds = Math.floor((ms / 1000) % 60);
 
-  return `${hours}:${minutes}:${seconds}`;
+  return `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 }
 
 export function getStartOfWeek(dateString) {
@@ -28,5 +28,10 @@ export function getStartOfWeek(dateString) {
 
 export function toUTCSyncFormat(timestamp) {
   const dt = new Date(timestamp);
-  return `${dt.getFullYear()}-${dt.getMonth()}-${dt.getDate()}T${dt.getHours()}:${dt.getMinutes()}:00Z`;
+  const month = String(dt.getMonth() + 1).padStart(2, '0');
+  const day = String(dt.getDate()).padStart(2, '0');
+  const hours = String(dt.getHours()).padStart(2, '0');
+  const minutes = String(dt.getMinutes()).padStart(2, '0');
+
+  return `${dt.getFullYear()}-${month}-${day}T${hours}:${minutes}:00Z`;
 }
