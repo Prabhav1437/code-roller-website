@@ -39,7 +39,27 @@ export function validatePassword(password) {
   return score == true; 
 }
 
+//fixed regex for email validation   
+// Rejects: leading/trailing dots in local part, consecutive dots anywhere,
+// domain labels starting/ending with a hyphen, missing TLD, single-letter
+// TLD, spaces, missing @ or domain, empty string.
+// Accepts: standard local-part chars (letters/digits/._%+-), subdomains,'-' domains, 2+ letter TLDs
+const SAFE_EMAIL_REGEX =
+  /^(?!\.)(?!.*\.\.)[a-zA-Z0-9._%+-]+(?<!\.)@[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?(\.[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/;
+
 export function validateEmail(email) {
-  const emailRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9.-]+$/;
-  return emailRegex.test(email);
+  if (typeof email !== 'string') return false;
+
+  if (typeof document !== 'undefined' && typeof document.createElement === 'function') {
+    try {
+      const input = document.createElement('input');
+      input.type = 'email';
+      input.value = email;
+      return input.checkValidity();
+    } catch (e) {
+      // to regex fallback
+    }
+  }
+
+  return SAFE_EMAIL_REGEX.test(email);
 }
