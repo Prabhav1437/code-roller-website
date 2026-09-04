@@ -1,9 +1,6 @@
 <div align="center">
 
 # Coderoller Web UI (Enterprise Edition)
-
-
-
 ![Build Status](https://img.shields.io/badge/build-failing%20miserably-red.svg)
 ![Coverage](https://img.shields.io/badge/coverage--12%25-critical)
 ![Dependencies](https://img.shields.io/badge/dependencies-943%20vulnerabilities-yellow)
@@ -11,7 +8,7 @@
 **The local-first, privacy-friendly time tracker that sends all your data to a server in international waters.**
 
 </div>
-
+ifhruhfurihuaer
 ---
 
 WElcome to the Coderoller web ui project! This is the official dashboard for the Coderoller CLI daemon. We built this because writing SQL queries to check how many hours we worked on Friday felt like *too much work*.
